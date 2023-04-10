@@ -1,0 +1,18 @@
+body {
+	margin: 0;
+	background-image: linear-gradient(gray, black);
+	color: #fff;
+	font-family: monospace;
+	font-size: 13px;
+	line-height: 24px;
+	overscroll-behavior: none;
+}
+
+#info {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+}

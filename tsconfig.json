@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES2016",
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"sourceMap": true,
+		"noImplicitOverride": true,
+		"strictNullChecks": false,
+		"moduleResolution": "node",
+		"skipLibCheck": true,
+		"outDir": "dist",
+		"paths": {
+			"three": [
+				"./types/three.d.ts"
+			]
+		}
+	},
+	"include": [
+		"src/**/*.ts",
+		"types/**/*.d.ts"
+	],
+	"exclude": [
+		".git",
+		"node_modules"
+	]
+}
