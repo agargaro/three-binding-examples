@@ -1,18 +1,17 @@
-"use strict";
 var _a;
-const lil_gui_1 = require("lil-gui");
-const three_1 = require("three");
-const OrbitControls_1 = require("three/examples/jsm/controls/OrbitControls");
-const stats_module_1 = require("three/examples/jsm/libs/stats.module");
-const binding_1 = require("./binding");
-class Sphere extends three_1.Mesh {
+import GUI from "lil-gui";
+import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3, WebGLRenderer } from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Stats from "three/examples/jsm/libs/stats.module";
+import { computeAutoBinding } from "./binding";
+class Sphere extends Mesh {
     constructor(index) {
         super(Sphere.geometry);
         this._speed = Math.random() * 0.90 + 0.1;
-        this._dir = new three_1.Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
-        this._lineDir = new three_1.Line3();
-        this._newPos = new three_1.Vector3();
-        this._intersection = new three_1.Vector3();
+        this._dir = new Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
+        this._lineDir = new Line3();
+        this._newPos = new Vector3();
+        this._intersection = new Vector3();
         const materialIndex = index % 3;
         this.bindProperty("material", () => Sphere.material[this.isColliding ? 3 : materialIndex]);
         this.bindProperty("visible", () => this.parent.spheresCount > index && this.parent.colorVisibility[this.isColliding ? 3 : materialIndex]);
@@ -52,14 +51,14 @@ class Sphere extends three_1.Mesh {
 }
 _a = Sphere;
 Sphere.geometryRadius = 0.4;
-Sphere.geometry = new three_1.SphereGeometry(_a.geometryRadius);
+Sphere.geometry = new SphereGeometry(_a.geometryRadius);
 Sphere.material = [
-    new three_1.MeshLambertMaterial({ color: 0x00ff00 }), new three_1.MeshLambertMaterial({ color: 0xffffff }),
-    new three_1.MeshLambertMaterial({ color: 0x0000ff }), new three_1.MeshLambertMaterial({ color: 0xff0000 })
+    new MeshLambertMaterial({ color: 0x00ff00 }), new MeshLambertMaterial({ color: 0xffffff }),
+    new MeshLambertMaterial({ color: 0x0000ff }), new MeshLambertMaterial({ color: 0xff0000 })
 ];
-class Impact extends three_1.Mesh {
+class Impact extends Mesh {
     constructor(position, faceNormal, color) {
-        super(Impact.geometry, new three_1.MeshBasicMaterial({ color, transparent: true, opacity: 0.7, side: three_1.DoubleSide }));
+        super(Impact.geometry, new MeshBasicMaterial({ color, transparent: true, opacity: 0.7, side: DoubleSide }));
         this.position.copy(position).sub(faceNormal.clone().setLength(Sphere.geometryRadius));
         this.lookAt(this.position.clone().add(faceNormal));
         this.bindProperty("visible", () => this.parent.showImpact);
@@ -73,11 +72,11 @@ class Impact extends three_1.Mesh {
         this.bindCallback("scale", () => this.scale.setScalar(this.material.opacity));
     }
 }
-Impact.geometry = new three_1.CircleGeometry(Sphere.geometryRadius, 16);
-class CustomScene extends three_1.Scene {
+Impact.geometry = new CircleGeometry(Sphere.geometryRadius, 16);
+class CustomScene extends Scene {
     constructor(domElement) {
         super();
-        this.camera = new three_1.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000).translateZ(12);
+        this.camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000).translateZ(12);
         this.colorVisibility = [true, true, true, true];
         this.showImpact = true;
         this.sphere = [];
@@ -86,9 +85,9 @@ class CustomScene extends three_1.Scene {
         this.spheresCount = 30;
         this.time = 0;
         this.timeAlpha = 0;
-        this.add(this.light = new three_1.DirectionalLight(0xffffff, 0.9), this.box = this.createBox());
+        this.add(this.light = new DirectionalLight(0xffffff, 0.9), this.box = this.createBox());
         this.updateLight();
-        this.controls = new OrbitControls_1.OrbitControls(this.camera, domElement);
+        this.controls = new OrbitControls(this.camera, domElement);
         this.controls.autoRotate = true;
         this.controls.addEventListener("change", () => this.updateLight());
         this.bindCallback("controls", () => this.controls.autoRotate && this.controls.update());
@@ -104,16 +103,16 @@ class CustomScene extends three_1.Scene {
         });
     }
     createBox() {
-        const box = new three_1.Mesh(new three_1.BoxGeometry(9, 9, 9, 5, 5, 5), new three_1.MeshBasicMaterial({ wireframe: true, transparent: true, opacity: 0.05 }));
+        const box = new Mesh(new BoxGeometry(9, 9, 9, 5, 5, 5), new MeshBasicMaterial({ wireframe: true, transparent: true, opacity: 0.05 }));
         box.geometry.computeBoundingBox();
         const bbox = box.geometry.boundingBox;
         this.boxFaces = [
-            new three_1.Plane(new three_1.Vector3(-1)).translate(new three_1.Vector3(bbox.max.x - Sphere.geometryRadius)),
-            new three_1.Plane(new three_1.Vector3(1)).translate(new three_1.Vector3(bbox.min.x + Sphere.geometryRadius)),
-            new three_1.Plane(new three_1.Vector3(0, -1)).translate(new three_1.Vector3(0, bbox.max.y - Sphere.geometryRadius)),
-            new three_1.Plane(new three_1.Vector3(0, 1)).translate(new three_1.Vector3(0, bbox.min.y + Sphere.geometryRadius)),
-            new three_1.Plane(new three_1.Vector3(0, 0, -1)).translate(new three_1.Vector3(0, 0, bbox.max.z - Sphere.geometryRadius)),
-            new three_1.Plane(new three_1.Vector3(0, 0, 1)).translate(new three_1.Vector3(0, 0, bbox.min.z + Sphere.geometryRadius))
+            new Plane(new Vector3(-1)).translate(new Vector3(bbox.max.x - Sphere.geometryRadius)),
+            new Plane(new Vector3(1)).translate(new Vector3(bbox.min.x + Sphere.geometryRadius)),
+            new Plane(new Vector3(0, -1)).translate(new Vector3(0, bbox.max.y - Sphere.geometryRadius)),
+            new Plane(new Vector3(0, 1)).translate(new Vector3(0, bbox.min.y + Sphere.geometryRadius)),
+            new Plane(new Vector3(0, 0, -1)).translate(new Vector3(0, 0, bbox.max.z - Sphere.geometryRadius)),
+            new Plane(new Vector3(0, 0, 1)).translate(new Vector3(0, 0, bbox.min.z + Sphere.geometryRadius))
         ];
         return box;
     }
@@ -127,9 +126,9 @@ class CustomScene extends three_1.Scene {
 }
 class Main {
     constructor() {
-        this.renderer = new three_1.WebGLRenderer({ alpha: true, antialias: true });
+        this.renderer = new WebGLRenderer({ alpha: true, antialias: true });
         this.scene = new CustomScene(this.renderer.domElement);
-        this.stats = (0, stats_module_1.default)();
+        this.stats = Stats();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setAnimationLoop(this.animate.bind(this));
         document.body.appendChild(this.renderer.domElement);
@@ -139,7 +138,7 @@ class Main {
     }
     animate(time) {
         this.scene.setTime(time / 1000);
-        (0, binding_1.computeAutoBinding)(this.scene);
+        computeAutoBinding(this.scene);
         this.renderer.render(this.scene, this.scene.camera);
         this.stats.update();
     }
@@ -159,7 +158,7 @@ class Main {
             "spheres count": this.scene.spheresCount,
             "auto rotate": this.scene.controls.autoRotate
         };
-        const gui = new lil_gui_1.default();
+        const gui = new GUI();
         gui.add(layers, "toggle green").onChange((value) => this.scene.colorVisibility[0] = value);
         gui.add(layers, "toggle white").onChange((value) => this.scene.colorVisibility[1] = value);
         gui.add(layers, "toggle blue").onChange((value) => this.scene.colorVisibility[2] = value);
@@ -171,4 +170,3 @@ class Main {
     }
 }
 window.main = new Main();
-//# sourceMappingURL=bouncingSpheresInBox.js.map

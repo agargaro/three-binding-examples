@@ -1,11 +1,10 @@
-"use strict";
-const three_1 = require("three");
-const stats_module_1 = require("three/examples/jsm/libs/stats.module");
-const binding_1 = require("./binding");
-class Sphere extends three_1.Mesh {
+import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3, WebGLRenderer } from "three";
+import Stats from "three/examples/jsm/libs/stats.module";
+import { DetectChangesMode, computeAutoBinding } from "./binding";
+class Sphere extends Mesh {
     constructor() {
-        super(new three_1.SphereGeometry(Sphere.radius, 10, 10), new three_1.MeshLambertMaterial({ color: 0xffffff }));
-        this.direction = new three_1.Vector3(Math.random() * 2 - 1, Math.random()).normalize();
+        super(new SphereGeometry(Sphere.radius, 10, 10), new MeshLambertMaterial({ color: 0xffffff }));
+        this.direction = new Vector3(Math.random() * 2 - 1, Math.random()).normalize();
         this.velocity = 0;
         this.bindCallback("position", () => this.position.add(this.direction.clone().setLength(this.velocity)));
         this.bindProperty("velocity", () => this.parent.timeAlpha);
@@ -18,23 +17,23 @@ class Sphere extends three_1.Mesh {
     }
 }
 Sphere.radius = 2;
-class Platform extends three_1.Mesh {
+class Platform extends Mesh {
     constructor() {
-        super(new three_1.BoxGeometry(20, 2.5, 0.1), new three_1.MeshBasicMaterial({ color: 0xffffff }));
+        super(new BoxGeometry(20, 2.5, 0.1), new MeshBasicMaterial({ color: 0xffffff }));
         this.position.set(0, -40, 0);
         document.addEventListener("mousemove", (e) => {
             const xAxis = (e.clientX / window.innerWidth - 0.5) / window.innerHeight * window.innerWidth * 100;
-            this.position.setX(three_1.MathUtils.clamp(xAxis, -50 + (10 * this.scale.x), 50 - (10 * this.scale.x)));
+            this.position.setX(MathUtils.clamp(xAxis, -50 + (10 * this.scale.x), 50 - (10 * this.scale.x)));
             this.updateWorldMatrix(false, false);
         });
         this.bindCallback("scaleX", () => this.scale.setX(1 - this.parent.bricksRemoved * 0.015));
     }
 }
-class Brick extends three_1.Mesh {
+class Brick extends Mesh {
     constructor(rowIndex, colIndex, durability) {
         super(Brick.geometry);
         this.durability = durability;
-        this.detectChangesMode = binding_1.DetectChangesMode.manual;
+        this.detectChangesMode = DetectChangesMode.manual;
         this.isBrick = true;
         this.position.setX(colIndex * 10 - 45).setY(45 - rowIndex * 2.5);
         this.bindProperty("material", () => Brick.materials[this.durability]);
@@ -46,29 +45,29 @@ class Brick extends three_1.Mesh {
         });
     }
 }
-Brick.geometry = new three_1.BoxGeometry(9.5, 2);
+Brick.geometry = new BoxGeometry(9.5, 2);
 Brick.materials = [
-    new three_1.MeshBasicMaterial({ color: 0xffffff }),
-    new three_1.MeshBasicMaterial({ color: 0x00ff00 }),
-    new three_1.MeshBasicMaterial({ color: 0xffff00 }),
-    new three_1.MeshBasicMaterial({ color: 0xff0000 }),
+    new MeshBasicMaterial({ color: 0xffffff }),
+    new MeshBasicMaterial({ color: 0x00ff00 }),
+    new MeshBasicMaterial({ color: 0xffff00 }),
+    new MeshBasicMaterial({ color: 0xff0000 }),
 ];
-class Wall extends three_1.Mesh {
+class Wall extends Mesh {
     constructor(position, width, height) {
-        super(new three_1.BoxGeometry(width, height, 0.1), new three_1.MeshBasicMaterial({ color: 0xffffff }));
+        super(new BoxGeometry(width, height, 0.1), new MeshBasicMaterial({ color: 0xffffff }));
         this.position.copy(position);
     }
 }
-class CustomScene extends three_1.Scene {
+class CustomScene extends Scene {
     constructor() {
         super();
-        this.camera = new three_1.OrthographicCamera(-50 / window.innerHeight * window.innerWidth, 50 / window.innerHeight * window.innerWidth, 50, -50).translateZ(10);
-        this.raycaster = new three_1.Raycaster();
-        this.light = new three_1.DirectionalLight(0xffffff, 0.9).translateZ(10);
+        this.camera = new OrthographicCamera(-50 / window.innerHeight * window.innerWidth, 50 / window.innerHeight * window.innerWidth, 50, -50).translateZ(10);
+        this.raycaster = new Raycaster();
+        this.light = new DirectionalLight(0xffffff, 0.9).translateZ(10);
         this.sphere = new Sphere();
         this.platform = new Platform();
-        this.deathLine = new Wall(new three_1.Vector3(0, -50), 100, 0.1);
-        this.walls = [new Wall(new three_1.Vector3(50), 0.1, 100), new Wall(new three_1.Vector3(-50), 0.1, 100), new Wall(new three_1.Vector3(0, 50), 100, 0.1)];
+        this.deathLine = new Wall(new Vector3(0, -50), 100, 0.1);
+        this.walls = [new Wall(new Vector3(50), 0.1, 100), new Wall(new Vector3(-50), 0.1, 100), new Wall(new Vector3(0, 50), 100, 0.1)];
         this.bindCallback("collisions", () => {
             let bounced;
             do {
@@ -100,8 +99,8 @@ class CustomScene extends three_1.Scene {
     }
     endGame(imgPath) {
         this.remove(...this.children);
-        new three_1.TextureLoader().load(imgPath, (texture) => {
-            this.add(new three_1.Mesh(new three_1.PlaneGeometry(50, 50), new three_1.MeshBasicMaterial({ map: texture })));
+        new TextureLoader().load(imgPath, (texture) => {
+            this.add(new Mesh(new PlaneGeometry(50, 50), new MeshBasicMaterial({ map: texture })));
         });
     }
     setTime(time) {
@@ -123,9 +122,9 @@ class CustomScene extends three_1.Scene {
 }
 class Main {
     constructor() {
-        this.renderer = new three_1.WebGLRenderer({ antialias: true });
+        this.renderer = new WebGLRenderer({ antialias: true });
         this.scene = new CustomScene();
-        this.stats = (0, stats_module_1.default)();
+        this.stats = Stats();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setAnimationLoop(this.animate.bind(this));
         document.body.appendChild(this.renderer.domElement);
@@ -134,7 +133,7 @@ class Main {
     }
     animate(time) {
         this.scene.setTime(time);
-        (0, binding_1.computeAutoBinding)(this.scene);
+        computeAutoBinding(this.scene);
         this.renderer.render(this.scene, this.scene.camera);
         this.stats.update();
     }
@@ -146,4 +145,3 @@ class Main {
     }
 }
 window.main = new Main();
-//# sourceMappingURL=arkanoid.js.map
