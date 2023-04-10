@@ -1,8 +1,8 @@
 var _a;
 import GUI from "lil-gui";
-import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3, WebGLRenderer } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Stats from "three/examples/jsm/libs/stats.module";
+import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3, WebGLRenderer } from "https://unpkg.com/three@0.151.0/build/three.module.js";
+import { OrbitControls } from "https://unpkg.com/three@0.151.0/examples/jsm/controls/OrbitControls";
+import Stats from "https://unpkg.com/three@0.151.0/examples/jsm/libs/stats.module";
 import { computeAutoBinding } from "./binding";
 class Sphere extends Mesh {
     constructor(index) {
