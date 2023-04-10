@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const three_1 = require("three");
 const stats_module_1 = require("three/examples/jsm/libs/stats.module");
 const binding_1 = require("./binding");

@@ -1,6 +1,5 @@
 "use strict";
 var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
 const lil_gui_1 = require("lil-gui");
 const three_1 = require("three");
 const OrbitControls_1 = require("three/examples/jsm/controls/OrbitControls");

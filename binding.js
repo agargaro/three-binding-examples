@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.DetectChangesMode = exports.computeAutoBinding = void 0;
 const three_1 = require("three");
 /**
