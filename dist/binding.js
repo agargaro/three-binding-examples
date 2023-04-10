@@ -1,19 +1,16 @@
-"use strict";
-exports.DetectChangesMode = exports.computeAutoBinding = void 0;
-const three_1 = require("three");
+import { Object3D } from "three";
 /**
  * Executes all callbacks bound to objects with detectChangesMode set to 'auto'.
  * @param scenes Scene or Scene array where execute bound callbacks.
  */
-function computeAutoBinding(scenes) {
+export function computeAutoBinding(scenes) {
     Binding.computeAll(scenes);
 }
-exports.computeAutoBinding = computeAutoBinding;
-var DetectChangesMode;
+export var DetectChangesMode;
 (function (DetectChangesMode) {
     DetectChangesMode[DetectChangesMode["auto"] = 0] = "auto";
     DetectChangesMode[DetectChangesMode["manual"] = 1] = "manual";
-})(DetectChangesMode = exports.DetectChangesMode || (exports.DetectChangesMode = {}));
+})(DetectChangesMode || (DetectChangesMode = {}));
 class Binding {
     static create(key, getValueCallback, setValueCallback, obj) {
         if (!obj) {
@@ -103,7 +100,7 @@ class Binding {
         }
     }
 }
-Object.defineProperty(three_1.Object3D.prototype, 'detectChangesMode', {
+Object.defineProperty(Object3D.prototype, 'detectChangesMode', {
     get() {
         var _a;
         return (_a = this._detectChangesMode) !== null && _a !== void 0 ? _a : DetectChangesMode.auto;
@@ -116,10 +113,10 @@ Object.defineProperty(three_1.Object3D.prototype, 'detectChangesMode', {
         }
     },
 });
-three_1.Object3D.prototype.detectChanges = function () {
+Object3D.prototype.detectChanges = function () {
     Binding.computeSingle(this);
 };
-three_1.Object3D.prototype.bindProperty = function (property, getValue, bindAfterParentAdded = true) {
+Object3D.prototype.bindProperty = function (property, getValue, bindAfterParentAdded = true) {
     const event = () => {
         var _a, _b, _c, _d;
         if (((_a = this[property]) === null || _a === void 0 ? void 0 : _a.isVector3) || ((_b = this[property]) === null || _b === void 0 ? void 0 : _b.isVector2) ||
@@ -136,7 +133,7 @@ three_1.Object3D.prototype.bindProperty = function (property, getValue, bindAfte
 };
 {
     const emptySet = () => { };
-    three_1.Object3D.prototype.bindCallback = function (key, callback, bindAfterParentAdded = true) {
+    Object3D.prototype.bindCallback = function (key, callback, bindAfterParentAdded = true) {
         const event = () => {
             Binding.create(key, callback, emptySet, this);
             this.removeEventListener("added", event);
@@ -145,13 +142,13 @@ three_1.Object3D.prototype.bindProperty = function (property, getValue, bindAfte
         return this;
     };
 }
-three_1.Object3D.prototype.unbindByKey = function (property) {
+Object3D.prototype.unbindByKey = function (property) {
     Binding.unbindByKey(this, property);
     return this;
 };
 {
-    const addBase = three_1.Object3D.prototype.add;
-    three_1.Object3D.prototype.add = function (object) {
+    const addBase = Object3D.prototype.add;
+    Object3D.prototype.add = function (object) {
         addBase.bind(this)(...arguments);
         if (arguments.length == 1 && object !== this && (object === null || object === void 0 ? void 0 : object.isObject3D)) {
             Binding.bindSceneObjAndChildren(object);
@@ -160,8 +157,8 @@ three_1.Object3D.prototype.unbindByKey = function (property) {
     };
 }
 {
-    const removeBase = three_1.Object3D.prototype.remove;
-    three_1.Object3D.prototype.remove = function (object) {
+    const removeBase = Object3D.prototype.remove;
+    Object3D.prototype.remove = function (object) {
         if (arguments.length == 1 && this.children.indexOf(object) !== -1) {
             Binding.unbindObjAndChildren(object);
         }
@@ -169,4 +166,3 @@ three_1.Object3D.prototype.unbindByKey = function (property) {
         return this;
     };
 }
-//# sourceMappingURL=binding.js.map
