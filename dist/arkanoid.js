@@ -1,5 +1,4 @@
-import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3, WebGLRenderer } from "three";
-import Stats from "three/examples/jsm/libs/stats.module";
+import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3, WebGLRenderer } from "https://unpkg.com/three@0.151.0/build/three.module.js";
 import { DetectChangesMode, computeAutoBinding } from "./binding";
 class Sphere extends Mesh {
     constructor() {
@@ -124,18 +123,15 @@ class Main {
     constructor() {
         this.renderer = new WebGLRenderer({ antialias: true });
         this.scene = new CustomScene();
-        this.stats = Stats();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setAnimationLoop(this.animate.bind(this));
         document.body.appendChild(this.renderer.domElement);
-        document.body.appendChild(this.stats.dom);
         window.addEventListener("resize", this.onWindowResize.bind(this));
     }
     animate(time) {
         this.scene.setTime(time);
         computeAutoBinding(this.scene);
         this.renderer.render(this.scene, this.scene.camera);
-        this.stats.update();
     }
     onWindowResize() {
         this.scene.camera.left = -50 / window.innerHeight * window.innerWidth;
