@@ -1,5 +1,5 @@
 import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3, WebGLRenderer } from "https://unpkg.com/three@0.151.0/build/three.module.js";
-import { DetectChangesMode, computeAutoBinding } from "./binding";
+import { DetectChangesMode, computeAutoBinding } from "./binding.js";
 class Sphere extends Mesh {
     constructor() {
         super(new SphereGeometry(Sphere.radius, 10, 10), new MeshLambertMaterial({ color: 0xffffff }));
