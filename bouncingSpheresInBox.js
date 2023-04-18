@@ -1,8 +1,8 @@
 var _a;
-import { Main as MainBase } from "./main.js";
+import { Main as MainBase } from "./main";
 import GUI from "lil-gui";
 import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 class Sphere extends Mesh {
     constructor(index) {
         super(Sphere.geometry);
@@ -117,7 +117,7 @@ class CustomScene extends Scene {
         return box;
     }
     setTime(time) {
-        this.timeAlpha = (time - this.time) * this.timeSpeed;
+        this.timeAlpha = (time - this.time) * this.timeSpeed / 1000;
         this.time = time;
     }
     updateLight() {
