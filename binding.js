@@ -1,4 +1,4 @@
-import { Object3D } from "https://unpkg.com/three@0.151.0/build/three.module.js";
+import { Object3D } from "three";
 /**
  * Executes all callbacks bound to objects with detectChangesMode set to 'auto'.
  * @param scenes Scene or Scene array where execute bound callbacks.

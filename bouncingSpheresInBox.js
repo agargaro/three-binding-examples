@@ -1,9 +1,8 @@
 var _a;
-import GUI from "lil-gui";
-import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3, WebGLRenderer } from "https://unpkg.com/three@0.151.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.151.0/examples/jsm/controls/OrbitControls.js";
-import Stats from "https://unpkg.com/three@0.151.0/examples/jsm/libs/stats.module.js";
-import { computeAutoBinding } from "./binding.js";
+import { Main as MainBase } from "./main";
+import GUI from "https://unpkg.com/lil-gui@0.18.1/dist/lil-gui.esm.min.js";
+import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls";
 class Sphere extends Mesh {
     constructor(index) {
         super(Sphere.geometry);
@@ -85,6 +84,7 @@ class CustomScene extends Scene {
         this.spheresCount = 30;
         this.time = 0;
         this.timeAlpha = 0;
+        window.addEventListener("resize", this.onWindowResize.bind(this));
         this.add(this.light = new DirectionalLight(0xffffff, 0.9), this.box = this.createBox());
         this.updateLight();
         this.controls = new OrbitControls(this.camera, domElement);
@@ -123,29 +123,15 @@ class CustomScene extends Scene {
     updateLight() {
         this.light.position.copy(this.camera.position);
     }
-}
-class Main {
-    constructor() {
-        this.renderer = new WebGLRenderer({ alpha: true, antialias: true });
-        this.scene = new CustomScene(this.renderer.domElement);
-        this.stats = Stats();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setAnimationLoop(this.animate.bind(this));
-        document.body.appendChild(this.renderer.domElement);
-        document.body.appendChild(this.stats.dom);
-        window.addEventListener("resize", this.onWindowResize.bind(this));
-        this.createGUI();
-    }
-    animate(time) {
-        this.scene.setTime(time / 1000);
-        computeAutoBinding(this.scene);
-        this.renderer.render(this.scene, this.scene.camera);
-        this.stats.update();
-    }
     onWindowResize() {
-        this.scene.camera.aspect = window.innerWidth / window.innerHeight;
-        this.scene.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+    }
+}
+class Main extends MainBase {
+    constructor() {
+        super(new CustomScene(document.getElementById("canvas")));
+        this.createGUI();
     }
     createGUI() {
         const layers = {
