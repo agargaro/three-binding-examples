@@ -1,6 +1,6 @@
 import { Camera, Scene, WebGLRenderer } from "three";
 import Stats from "three/examples/jsm/libs/stats.module";
-import { computeAutoBinding } from "./binding.js";
+import { computeAutoBinding } from "./binding";
 
 type CustomScene = Scene & { setTime(time: number): void, camera: Camera };
 

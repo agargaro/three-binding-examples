@@ -73,7 +73,6 @@ class CustomScene extends Scene {
         this.speed = 0.1;
         this.bricksRemoved = 0;
         window.addEventListener("resize", this.onWindowResize.bind(this));
-        this.raycaster.params.Mesh = { threshold: Sphere.radius };
         this.add(this.light, this.platform, this.sphere, ...this.walls, this.deathLine);
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < 10; j++) {

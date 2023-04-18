@@ -1,4 +1,4 @@
-import { Main as MainBase } from "./main.js";
+import { Main as MainBase } from "./main";
 import GUI from "lil-gui";
 import { BoxGeometry, CircleGeometry, Color, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";

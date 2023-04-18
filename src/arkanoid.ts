@@ -1,6 +1,6 @@
-import { Main } from "./main.js";
+import { Main } from "./main";
 import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3 } from "three";
-import { DetectChangesMode } from "./binding.js";
+import { DetectChangesMode } from "./binding";
 
 class Sphere extends Mesh {
     public static radius = 2;
@@ -86,9 +86,8 @@ class CustomScene extends Scene {
 
     constructor() {
         super();
+
         window.addEventListener("resize", this.onWindowResize.bind(this));
-        
-        this.raycaster.params.Mesh = { threshold: Sphere.radius };
         this.add(this.light, this.platform, this.sphere, ...this.walls, this.deathLine);
 
         for (let i = 0; i < 4; i++) {
