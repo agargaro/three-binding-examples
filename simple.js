@@ -2,7 +2,7 @@ import { BoxGeometry, DirectionalLight, Mesh, MeshLambertMaterial, PerspectiveCa
 import { Main } from "./main.js";
 class Box extends Mesh {
     constructor(position) {
-        super(new BoxGeometry(5, 5, 5), new MeshLambertMaterial());
+        super(new BoxGeometry(3, 3, 3), new MeshLambertMaterial());
         this._colors = [0xaaaaaa, 0xffaaaa, 0xffff00];
         this._rotationSpeed = new Vector3(Math.random() / 100, Math.random() / 100, Math.random() / 100);
         this.position.copy(position);
@@ -26,7 +26,7 @@ class CustomScene extends Scene {
         window.addEventListener("resize", this.onWindowResize.bind(this));
         window.addEventListener("pointermove", this.onPointerMove.bind(this));
         window.addEventListener("click", this.onClick.bind(this));
-        this.add(new DirectionalLight(0xffffff, 0.9).translateZ(10), ...this.boxes = [new Box(new Vector3(10)), new Box(new Vector3()), new Box(new Vector3(-10))]);
+        this.add(new DirectionalLight(0xffffff, 0.9).translateZ(10), ...this.boxes = [new Box(new Vector3(6)), new Box(new Vector3()), new Box(new Vector3(-6))]);
         this.bindCallback("raycasting", () => {
             var _a;
             this.raycaster.setFromCamera(this._pointer, this.camera);
