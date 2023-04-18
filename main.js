@@ -12,7 +12,7 @@ export class Main {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
     animate(time) {
-        this.scene.setTime(time);
+        this.scene.setTime && this.scene.setTime(time);
         computeAutoBinding(this.scene); // this is important!
         this.renderer.render(this.scene, this.scene.camera);
         this.stats.update();
