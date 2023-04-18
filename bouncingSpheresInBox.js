@@ -1,8 +1,8 @@
 var _a;
-import { Main as MainBase } from "./main";
+import { Main as MainBase } from "./main.js";
 import GUI from "lil-gui";
 import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/addons/controls/OrbitControls";
 class Sphere extends Mesh {
     constructor(index) {
         super(Sphere.geometry);
