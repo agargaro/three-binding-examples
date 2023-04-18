@@ -1,8 +1,8 @@
 var _a;
-import GUI from "https://unpkg.com/lil-gui@0.18.1/dist/lil-gui.esm.min.js";
-import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "https://unpkg.com/three@0.151.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.151.0/examples/jsm/controls/OrbitControls.js";
 import { Main as MainBase } from "./main";
+import GUI from "https://unpkg.com/lil-gui@0.18.1/dist/lil-gui.esm.min.js";
+import { BoxGeometry, CircleGeometry, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls";
 class Sphere extends Mesh {
     constructor(index) {
         super(Sphere.geometry);

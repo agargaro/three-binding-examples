@@ -1,6 +1,6 @@
-import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3 } from "https://unpkg.com/three@0.151.0/build/three.module.js";
-import { DetectChangesMode } from "./binding";
 import { Main } from "./main";
+import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3 } from "three";
+import { DetectChangesMode } from "./binding";
 class Sphere extends Mesh {
     constructor() {
         super(new SphereGeometry(Sphere.radius, 10, 10), new MeshLambertMaterial({ color: 0xffffff }));
@@ -113,7 +113,7 @@ class CustomScene extends Scene {
     endGame(imgPath) {
         this.remove(...this.children);
         new TextureLoader().load(imgPath, (texture) => {
-            this.add(new Mesh(new PlaneGeometry(50, 50), new MeshBasicMaterial({ map: texture })));
+            this.add(new Mesh(new PlaneGeometry(50, 50 / 4), new MeshBasicMaterial({ map: texture })));
         });
     }
     setTime(time) {

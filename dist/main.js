@@ -1,5 +1,5 @@
-import { WebGLRenderer } from "https://unpkg.com/three@0.151.0/build/three.module.js";
-import Stats from "https://unpkg.com/three@0.151.0/examples/jsm/libs/stats.module.js";
+import { WebGLRenderer } from "three";
+import Stats from "three/addons/libs/stats.module";
 import { computeAutoBinding } from "./binding";
 export class Main {
     constructor(scene) {

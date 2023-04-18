@@ -1,6 +1,6 @@
+import { Main } from "./main";
 import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3 } from "three";
 import { DetectChangesMode } from "./binding";
-import { Main } from "./main";
 
 class Sphere extends Mesh {
     public static radius = 2;
@@ -134,7 +134,7 @@ class CustomScene extends Scene {
     public endGame(imgPath: string): void {
         this.remove(...this.children);
         new TextureLoader().load(imgPath, (texture) => {
-            this.add(new Mesh(new PlaneGeometry(50, 50), new MeshBasicMaterial({ map: texture })));
+            this.add(new Mesh(new PlaneGeometry(50, 50 / 4), new MeshBasicMaterial({ map: texture })));
         });
     }
 
