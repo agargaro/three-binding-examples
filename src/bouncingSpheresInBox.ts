@@ -1,8 +1,7 @@
 import GUI from "lil-gui";
-import { BoxGeometry, CircleGeometry, Color, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3, WebGLRenderer } from "three";
+import { BoxGeometry, CircleGeometry, Color, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Stats from "three/examples/jsm/libs/stats.module";
-import { computeAutoBinding } from "./binding";
+import { Main as MainBase } from "./main";
 
 class Sphere extends Mesh {
     public static geometryRadius = 0.4;
@@ -110,6 +109,8 @@ class CustomScene extends Scene {
     constructor(domElement: HTMLCanvasElement) {
         super();
 
+        window.addEventListener("resize", this.onWindowResize.bind(this));
+
         this.add(
             this.light = new DirectionalLight(0xffffff, 0.9),
             this.box = this.createBox()
@@ -132,7 +133,6 @@ class CustomScene extends Scene {
                 }
             }
         });
-
     }
 
     public createBox(): Mesh {
@@ -158,33 +158,19 @@ class CustomScene extends Scene {
     public updateLight(): void {
         this.light.position.copy(this.camera.position);
     }
-}
-
-class Main {
-    public renderer = new WebGLRenderer({ alpha: true, antialias: true });
-    public scene = new CustomScene(this.renderer.domElement);
-    public stats = Stats();
-
-    constructor() {
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setAnimationLoop(this.animate.bind(this));
-        document.body.appendChild(this.renderer.domElement);
-        document.body.appendChild(this.stats.dom);
-        window.addEventListener("resize", this.onWindowResize.bind(this));
-        this.createGUI();
-    }
-
-    public animate(time: number): void {
-        this.scene.setTime(time / 1000);
-        computeAutoBinding(this.scene);
-        this.renderer.render(this.scene, this.scene.camera);
-        this.stats.update();
-    }
 
     public onWindowResize(): void {
-        this.scene.camera.aspect = window.innerWidth / window.innerHeight;
-        this.scene.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+    }
+}
+
+class Main extends MainBase {
+    public override scene: CustomScene;
+
+    constructor() {
+        super(new CustomScene(document.getElementById("canvas") as HTMLCanvasElement));
+        this.createGUI();
     }
 
     private createGUI(): void {

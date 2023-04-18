@@ -1,9 +1,10 @@
-import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3, WebGLRenderer } from "https://unpkg.com/three@0.151.0/build/three.module.js";
-import { DetectChangesMode, computeAutoBinding } from "./binding.js";
+import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3 } from "https://unpkg.com/three@0.151.0/build/three.module.js";
+import { DetectChangesMode } from "./binding";
+import { Main } from "./main";
 class Sphere extends Mesh {
     constructor() {
         super(new SphereGeometry(Sphere.radius, 10, 10), new MeshLambertMaterial({ color: 0xffffff }));
-        this.direction = new Vector3(Math.random() * 2 - 1, Math.random()).normalize();
+        this.direction = new Vector3(Math.random() - 0.5, Math.random()).normalize();
         this.velocity = 0;
         this.bindCallback("position", () => this.position.add(this.direction.clone().setLength(this.velocity)));
         this.bindProperty("velocity", () => this.parent.timeAlpha);
@@ -67,6 +68,18 @@ class CustomScene extends Scene {
         this.platform = new Platform();
         this.deathLine = new Wall(new Vector3(0, -50), 100, 0.1);
         this.walls = [new Wall(new Vector3(50), 0.1, 100), new Wall(new Vector3(-50), 0.1, 100), new Wall(new Vector3(0, 50), 100, 0.1)];
+        this.time = 0;
+        this.timeAlpha = 0;
+        this.speed = 0.1;
+        this.bricksRemoved = 0;
+        window.addEventListener("resize", this.onWindowResize.bind(this));
+        this.raycaster.params.Mesh = { threshold: Sphere.radius };
+        this.add(this.light, this.platform, this.sphere, ...this.walls, this.deathLine);
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 10; j++) {
+                this.add(new Brick(i, j, Math.abs(3 - i)));
+            }
+        }
         this.bindCallback("collisions", () => {
             let bounced;
             do {
@@ -85,16 +98,17 @@ class CustomScene extends Scene {
                             intersection.object.detectChanges();
                             if (this.bricksRemoved === 10 * 4) {
                                 this.endGame("./assets/win.png");
+                                break;
                             }
                         }
                         else if (intersection.object === this.deathLine) {
                             this.endGame("./assets/gameover.png");
+                            break;
                         }
                     }
                 }
             } while (bounced);
         });
-        this.startGame();
     }
     endGame(imgPath) {
         this.remove(...this.children);
@@ -106,38 +120,10 @@ class CustomScene extends Scene {
         this.timeAlpha = (time - this.time) * (this.speed + this.bricksRemoved * 0.005);
         this.time = time;
     }
-    startGame() {
-        this.speed = 0.1;
-        this.time = 0;
-        this.timeAlpha = 0;
-        this.bricksRemoved = 0;
-        this.add(this.light, this.platform, this.sphere, ...this.walls, this.deathLine);
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 10; j++) {
-                this.add(new Brick(i, j, Math.abs(3 - i)));
-            }
-        }
-    }
-}
-class Main {
-    constructor() {
-        this.renderer = new WebGLRenderer({ antialias: true });
-        this.scene = new CustomScene();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setAnimationLoop(this.animate.bind(this));
-        document.body.appendChild(this.renderer.domElement);
-        window.addEventListener("resize", this.onWindowResize.bind(this));
-    }
-    animate(time) {
-        this.scene.setTime(time);
-        computeAutoBinding(this.scene);
-        this.renderer.render(this.scene, this.scene.camera);
-    }
     onWindowResize() {
-        this.scene.camera.left = -50 / window.innerHeight * window.innerWidth;
-        this.scene.camera.right = 50 / window.innerHeight * window.innerWidth;
-        this.scene.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.camera.left = -50 / window.innerHeight * window.innerWidth;
+        this.camera.right = 50 / window.innerHeight * window.innerWidth;
+        this.camera.updateProjectionMatrix();
     }
 }
-window.main = new Main();
+window.main = new Main(new CustomScene());
