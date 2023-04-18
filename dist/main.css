@@ -1,12 +1,13 @@
-body {
-	margin: 0;
-	background-image: linear-gradient(gray, black);
-	color: #fff;
+﻿html, body {
+	margin: 0px;
+	overflow: hidden;
+	height: 100%;
 	font-family: monospace;
-	font-size: 13px;
-	line-height: 24px;
+	font-size: 14px;
+	line-height: 1.42857143;
 	overscroll-behavior: none;
-}
+	background-image: linear-gradient(gray, black);
+  }
 
 #info {
 	position: absolute;

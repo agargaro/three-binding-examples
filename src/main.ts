@@ -1,11 +1,11 @@
 import { Camera, Scene, WebGLRenderer } from "three";
 import Stats from "three/examples/jsm/libs/stats.module";
-import { computeAutoBinding } from "./binding";
+import { computeAutoBinding } from "./binding.js";
 
 type CustomScene = Scene & { setTime(time: number): void, camera: Camera };
 
 export class Main {
-    public renderer = new WebGLRenderer({ antialias: true, canvas: document.getElementById("canvas") });
+    public renderer = new WebGLRenderer({ antialias: true, alpha: true, canvas: document.getElementById("canvas") });
     public scene: CustomScene;
     public stats = Stats();
 

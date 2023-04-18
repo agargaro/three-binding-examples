@@ -1,4 +1,4 @@
-import { Main as MainBase } from "./main";
+import { Main as MainBase } from "./main.js";
 import GUI from "lil-gui";
 import { BoxGeometry, CircleGeometry, Color, DirectionalLight, DoubleSide, Line3, Mesh, MeshBasicMaterial, MeshLambertMaterial, PerspectiveCamera, Plane, Scene, SphereGeometry, Vector3 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -151,7 +151,7 @@ class CustomScene extends Scene {
     }
 
     public setTime(time: number): void {
-        this.timeAlpha = (time - this.time) * this.timeSpeed;
+        this.timeAlpha = (time - this.time) * this.timeSpeed / 1000;
         this.time = time;
     }
 
