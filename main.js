@@ -1,6 +1,6 @@
 import { WebGLRenderer } from "three";
 import Stats from "three/addons/libs/stats.module";
-import { computeAutoBinding } from "./binding";
+import { computeAutoBinding } from "./binding.js";
 export class Main {
     constructor(scene) {
         this.renderer = new WebGLRenderer({ antialias: true, canvas: document.getElementById("canvas") });
