@@ -1,5 +1,5 @@
 import { BoxGeometry, DirectionalLight, Mesh, MeshLambertMaterial, PerspectiveCamera, Raycaster, Scene, Vector2, Vector3 } from "three";
-import { Main } from "./main";
+import { Main } from "./main.js";
 class Box extends Mesh {
     constructor(position) {
         super(new BoxGeometry(5, 5, 5), new MeshLambertMaterial());
