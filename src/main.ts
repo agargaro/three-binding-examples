@@ -18,7 +18,7 @@ export class Main {
     }
 
     public animate(time: number): void {
-        this.scene.setTime(time);
+        this.scene.setTime && this.scene.setTime(time);
         computeAutoBinding(this.scene); // this is important!
         this.renderer.render(this.scene, this.scene.camera);
         this.stats.update();
