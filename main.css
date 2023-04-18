@@ -6,8 +6,11 @@
 	font-size: 14px;
 	line-height: 1.42857143;
 	overscroll-behavior: none;
-	background-image: linear-gradient(gray, black);
   }
+
+.gradient {
+	background-image: linear-gradient(gray, black);
+}
 
 #info {
 	position: absolute;
