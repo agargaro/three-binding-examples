@@ -1,5 +1,6 @@
 # three-binding-examples
-Examples using three-binding.
+Examples using [three-binding](https://github.com/agargaro/three-binding "three-binding").
+
 <br />
 <br />
 [Simple Code](https://github.com/agargaro/three-binding-examples/blob/main/src/simple.ts "Simple Code") <br />
