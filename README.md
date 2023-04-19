@@ -1,8 +1,6 @@
 # three-binding-examples
 Examples using [three-binding](https://github.com/agargaro/three-binding "three-binding").
 
-<br />
-<br />
 [Simple Code](https://github.com/agargaro/three-binding-examples/blob/main/src/simple.ts "Simple Code") <br />
 [Simple Live](https://agargaro.github.io/three-binding-examples/simple "Simple Live") <br />
 [Arkanoid Code](https://github.com/agargaro/three-binding-examples/blob/main/src/arkanoid.ts "Arkanoid Code") <br />
