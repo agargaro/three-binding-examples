@@ -1,6 +1,6 @@
 import { Main } from "./main.js";
 import { BoxGeometry, DirectionalLight, MathUtils, Mesh, MeshBasicMaterial, MeshLambertMaterial, OrthographicCamera, PlaneGeometry, Raycaster, Scene, SphereGeometry, TextureLoader, Vector3 } from "three";
-import { DetectChangesMode } from "./binding.js";
+import { DetectChangesMode } from "three-binding";
 class Sphere extends Mesh {
     constructor() {
         super(new SphereGeometry(Sphere.radius, 10, 10), new MeshLambertMaterial({ color: 0xffffff }));
